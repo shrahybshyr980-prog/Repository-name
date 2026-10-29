@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>توزيع الأرباح</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c2b3a;--muted:#6b7a89;--line:#e3e9f0;--bg:#f3f6fa;--blue:#1f4e79;--blue2:#2b73b8}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.app{max-width:760px;margin:0 auto;padding:14px 12px 40px}
+.hero{background:linear-gradient(135deg,#1b4a80,#2f7bbf);color:#fff;border-radius:14px;padding:20px 16px;text-align:center;margin-bottom:14px}
+.hero h1{margin:0;font-size:22px;font-weight:800}
+.hero p{margin:4px 0 0;font-size:13px;opacity:.9}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 6px rgba(20,50,90,.07)}
+.card h2{margin:0 0 12px;font-size:17px;font-weight:700}
+.card label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.total-in{width:100%;font:700 18px 'Cairo',Tahoma,sans-serif;padding:12px;border:2px solid var(--blue2);border-radius:10px;background:#fff;color:var(--ink)}
+.total-in:focus{outline:3px solid rgba(43,115,184,.35)}
+.hint{font-size:12px;color:var(--muted);margin:6px 0 8px}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:3px 12px;border-radius:20px;background:#e6f5ec;color:#1d7a4d}
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stage{border-radius:10px;padding:10px;border:1px solid;font-size:12px}
+.stage h3{margin:0 0 8px;font-size:13px;font-weight:700}
+.stage .row{display:flex;justify-content:space-between;gap:4px;color:var(--muted);margin:2px 0}
+.stage .row b{color:var(--ink);font-weight:600}
+.stage .per{margin-top:8px;font-size:18px;font-weight:800;display:flex;justify-content:space-between;align-items:baseline}
+.stage .per small{font-size:11px;font-weight:600;color:var(--muted)}
+.s1{background:#e9f6ef;border-color:#7cc5a0}.s1 h3{color:#1d7a4d}
+.s2{background:#fff3e6;border-color:#f0b36b}.s2 h3{color:#c2620a}
+.s3{background:#e8f1fb;border-color:#8bb7e6}.s3 h3{color:#1f5fa8}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--blue);color:#fff;font-weight:600;padding:8px 3px;text-align:center;font-size:11.5px}
+td{padding:9px 3px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+td.nm{text-align:right;font-weight:700;white-space:normal;min-width:64px}
+td small{display:block;color:var(--muted);font-size:11px;font-weight:600}
+tr.sum td{background:#eef3fa;font-weight:800;border-bottom:0}
+.btn{white-space:nowrap;font:600 12px 'Cairo',Tahoma,sans-serif;background:var(--blue2);color:#fff;border:0;border-radius:6px;padding:7px 12px;cursor:pointer}
+.btn:hover{background:var(--blue)}
+.btn:focus-visible{outline:3px solid #9cc7ee;outline-offset:2px}
+.btn.big{font-size:15px;padding:10px 22px}
+.note{background:#e8f6ee;border:1px solid #7cc5a0;border-radius:8px;padding:8px 10px;font-size:12px;color:#1d6a43;margin-bottom:12px}
+.link{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f4f7fb;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.link .info{min-width:0;flex:1}
+.link .info b{display:block;font-size:14px}
+.link .info span{display:block;font-size:11px;color:var(--muted);direction:ltr;text-align:right;word-break:break-all}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:6px}
+.err{color:#b42318;font-weight:700;text-align:center;padding:30px 0}
+/* statement */
+.statement{background:#fff;border-radius:14px;padding:22px;box-shadow:0 1px 6px rgba(20,50,90,.07)}
+.st-top{border-bottom:3px solid var(--blue);padding-bottom:10px;margin-bottom:14px}
+.st-plat{font-size:14px;color:var(--muted);font-weight:600}
+.st-title{font-size:26px;font-weight:800;color:var(--blue)}
+.statement dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 14px}
+.statement dt{color:var(--muted);font-weight:600}
+.statement dd{margin:0;font-weight:700}
+.statement table{font-size:14px}
+.statement tfoot td{background:#eef3fa;font-weight:800;border-bottom:0}
+.pct-line{margin-top:14px;font-size:16px}
+.pct-line b{font-size:24px;color:#1d7a4d}
+.sign{display:flex;gap:24px;margin-top:44px;color:var(--muted);font-size:13px}
+.sign span{flex:1;border-top:1px solid var(--ink);padding-top:6px;text-align:center}
+.member-bar{text-align:center;margin-top:14px}
+#printArea{display:none}
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff}
+  .screen{display:none!important}
+  #printArea{display:block}
+  .statement{box-shadow:none;padding:0}
+  th,tr.sum td,tfoot td{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div id="adminView" class="screen">
+    <div class="hero"><h1 id="heroTitle"></h1><p>حاسبة توزيع الأرباح - العملة: الدينار الجزائري (دج)</p></div>
+
+    <div class="card">
+      <label for="total">إجمالي أرباح المؤسسة (دج)</label>
+      <input id="total" class="total-in" type="number" min="0" step="0.01" inputmode="decimal">
+      <div class="hint">أدخل المبلغ، وتتحدث الحصص والكشوفات مباشرة. الرقم الموجود مثال فقط.</div>
+      <span class="badge" id="saved">✔ تم الحفظ</span>
+      <div class="stages" id="stages"></div>
+    </div>
+
+    <div class="card">
+      <h2>توزيع الحصص على الأشخاص</h2>
+      <div class="tw"><table id="tbl"></table></div>
+    </div>
+
+    <div class="card">
+      <h2>🔒 روابط خاصة لكل عضو</h2>
+      <div class="note">كل رابط يفتح كشف صاحبه فقط، ولا يظهر فيه أي شخص آخر. الرابط يحمل المبلغ الحالي، فإذا غيّرت الأرباح انسخ الرابط من جديد.</div>
+      <div id="links"></div>
+    </div>
+
+    <div class="foot">يمكنك طباعة كشف أي شخص بشكل مستقل من الجدول، أو مشاركة رابطه الخاص من الأسفل.</div>
+  </div>
+
+  <div id="memberView" class="screen" hidden></div>
+  <div id="printArea"></div>
+</div>
+
+<script>
+(function(){
+  var CONFIG = {"id": "vprog", "platform": "منصة المبرمج الافتراضي", "defaultTotal": 100000, "stages": [25, 55, 20], "people": [{"id": "p1", "name": "شراحي محمد البشير", "f": [1, 1, 1]}, {"id": "p2", "name": "سعداوي زينب", "f": [1, 1, 1]}, {"id": "p3", "name": "عتبي صبرينة", "f": [1, 1, 0]}, {"id": "p4", "name": "علواني أميرة", "f": [1, 1, 0]}, {"id": "p5", "name": "فار بدر", "f": [1, 1, 0]}, {"id": "p6", "name": "عابر آية", "f": [1, 0, 0]}, {"id": "p7", "name": "حناشي آية", "f": [1, 0, 0]}]};
+  var KEY = 'pd-' + CONFIG.id;
+  var nf = new Intl.NumberFormat('en-US',{minimumFractionDigits:0,maximumFractionDigits:2});
+  function num(n){ return nf.format(Math.round(n*100)/100); }
+  function money(n){ return num(n) + ' دج'; }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function $(id){ return document.getElementById(id); }
+  var ORD = ['الأولى','الثانية','الثالثة'];
+  var stages = CONFIG.stages, people = CONFIG.people;
+
+  var params = new URLSearchParams(location.search);
+  var who = params.get('who');
+  var total = Number(params.get('t'));
+  if(!(total >= 0) || params.get('t') === null){
+    total = null;
+    try { var s = localStorage.getItem(KEY); if(s !== null) total = Number(s); } catch(e){}
+  }
+  if(total === null || isNaN(total)) total = CONFIG.defaultTotal;
+
+  document.title = 'توزيع أرباح ' + CONFIG.platform;
+
+  function compute(t){
+    var counts = [0,0,0];
+    people.forEach(function(p){ for(var k=0;k<3;k++){ counts[k] += p.f[k]; } });
+    var amt = [], per = [];
+    for(var k=0;k<3;k++){ amt[k] = t*stages[k]/100; per[k] = counts[k] ? amt[k]/counts[k] : 0; }
+    var rows = people.map(function(p){
+      var sh = [0,1,2].map(function(k){ return p.f[k] ? per[k] : 0; });
+      var sp = [0,1,2].map(function(k){ return (p.f[k] && counts[k]) ? stages[k]/counts[k] : 0; });
+      return {sh:sh, sp:sp, tot:sh[0]+sh[1]+sh[2], tp:sp[0]+sp[1]+sp[2]};
+    });
+    return {counts:counts, amt:amt, per:per, rows:rows};
+  }
+
+  function dateStr(){
+    var d = new Date();
+    return ('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();
+  }
+
+  function statementHTML(i, t, c){
+    var p = people[i], r = c.rows[i];
+    var rows = [0,1,2].map(function(k){
+      return '<tr><td>المرحلة '+ORD[k]+'</td><td>'+(p.f[k]?num(r.sp[k])+'%':'–')+'</td><td>'+(p.f[k]?money(r.sh[k]):'–')+'</td></tr>';
+    }).join('');
+    return '<div class="statement">' +
+      '<div class="st-top"><div class="st-plat">'+esc(CONFIG.platform)+'</div><div class="st-title">كشف أرباح</div></div>' +
+      '<dl><dt>المستفيد</dt><dd>'+esc(p.name)+'</dd><dt>التاريخ</dt><dd>'+dateStr()+'</dd><dt>إجمالي أرباح المؤسسة</dt><dd>'+money(t)+'</dd></dl>' +
+      '<table><thead><tr><th>المرحلة</th><th>نسبتك من الأرباح</th><th>المبلغ</th></tr></thead><tbody>'+rows+'</tbody>' +
+      '<tfoot><tr><td>الإجمالي</td><td>'+num(r.tp)+'%</td><td>'+money(r.tot)+'</td></tr></tfoot></table>' +
+      '<div class="pct-line">نسبتك الإجمالية من 100: <b>'+num(r.tp)+'</b></div>' +
+      '<div class="sign"><span>توقيع المسؤول</span><span>توقيع المستفيد</span></div></div>';
+  }
+
+  function printStatement(i){
+    var c = compute(total);
+    $('printArea').innerHTML = statementHTML(i, total, c);
+    window.print();
+  }
+
+  /* ----- member view ----- */
+  if(who){
+    var idx = -1;
+    people.forEach(function(p,i){ if(p.id === who) idx = i; });
+    $('adminView').hidden = true;
+    var mv = $('memberView'); mv.hidden = false;
+    if(idx < 0){ mv.innerHTML = '<div class="err">الرابط غير صحيح.</div>'; return; }
+    var c0 = compute(total);
+    mv.innerHTML = '<div class="hero"><h1>'+esc(CONFIG.platform)+'</h1><p>كشف الأرباح الخاص بك</p></div>' +
+      statementHTML(idx, total, c0) +
+      '<div class="member-bar"><button class="btn big" id="mp" type="button">🖨 طباعة / حفظ PDF</button></div>';
+    $('mp').addEventListener('click', function(){ printStatement(idx); });
+    return;
+  }
+
+  /* ----- admin view ----- */
+  $('heroTitle').textContent = 'أرباح ' + CONFIG.platform;
+  var inp = $('total');
+  inp.value = total;
+
+  function render(){
+    var c = compute(total);
+    // stages
+    $('stages').innerHTML = [0,1,2].map(function(k){
+      return '<div class="stage s'+(k+1)+'"><h3>المرحلة '+ORD[k]+' - '+stages[k]+'%</h3>' +
+        '<div class="row"><span>عدد المستفيدين</span></div><div class="row"><b>'+c.counts[k]+' أشخاص</b></div>' +
+        '<div class="row"><span>إجمالي المرحلة</span></div><div class="row"><b>'+num(c.amt[k])+' دج</b></div>' +
+        '<div class="per"><span>'+num(c.per[k])+' دج</span><small>/ فرد</small></div></div>';
+    }).join('');
+    // table
+    var h = '<thead><tr><th>الاسم</th><th>المرحلة الأولى ('+stages[0]+'%)</th><th>المرحلة الثانية ('+stages[1]+'%)</th><th>المرحلة الثالثة ('+stages[2]+'%)</th><th>الإجمالي</th><th>كشف الحساب</th></tr></thead><tbody>';
+    var sums = [0,0,0,0];
+    people.forEach(function(p,i){
+      var r = c.rows[i];
+      h += '<tr><td class="nm">'+esc(p.name)+'</td>';
+      for(var k=0;k<3;k++){ h += '<td>'+(p.f[k]?money(r.sh[k]):'–')+'</td>'; sums[k]+=r.sh[k]; }
+      sums[3]+=r.tot;
+      h += '<td><b>'+money(r.tot)+'</b><small>'+num(r.tp)+' من 100</small></td>' +
+           '<td><button class="btn" type="button" data-pr="'+i+'" style="padding:6px 8px">🖨 طباعة</button></td></tr>';
+    });
+    h += '<tr class="sum"><td class="nm">المجموع</td><td>'+money(sums[0])+'</td><td>'+money(sums[1])+'</td><td>'+money(sums[2])+'</td><td>'+money(sums[3])+'</td><td></td></tr></tbody>';
+    $('tbl').innerHTML = h;
+    $('tbl').querySelectorAll('[data-pr]').forEach(function(b){
+      b.addEventListener('click', function(){ printStatement(+b.dataset.pr); });
+    });
+    // links
+    var base = location.origin + location.pathname;
+    $('links').innerHTML = people.map(function(p,i){
+      var url = base + '?who=' + p.id + '&t=' + total;
+      return '<div class="link"><button class="btn" type="button" data-cp="'+i+'">نسخ الرابط</button>' +
+        '<div class="info"><b>'+esc(p.name)+'</b><span>'+esc(url)+'</span></div></div>';
+    }).join('');
+    $('links').querySelectorAll('[data-cp]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var i = +b.dataset.cp;
+        var url = base + '?who=' + people[i].id + '&t=' + total;
+        copy(url, b);
+      });
+    });
+  }
+
+  function copy(text, btn){
+    function done(){ var o = btn.textContent; btn.textContent = 'تم النسخ ✔'; setTimeout(function(){ btn.textContent = o; }, 1500); }
+    if(navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e){}
+      document.body.removeChild(ta);
+    }
+  }
+
+  inp.addEventListener('input', function(){
+    total = Math.max(0, parseFloat(inp.value) || 0);
+    var badge = $('saved');
+    try { localStorage.setItem(KEY, String(total)); badge.textContent = '✔ تم الحفظ'; badge.style.background='#e6f5ec'; badge.style.color='#1d7a4d'; }
+    catch(e){ badge.textContent = '✗ لم يتم الحفظ على هذا الجهاز'; badge.style.background='#fdecea'; badge.style.color='#b42318'; }
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
